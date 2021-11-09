@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./boom.component.css'],
 })
 export class BoomComponent implements OnInit {
-  someFlag: boolean;
+  someFlag: boolean = true;
 
   constructor() {}
 
