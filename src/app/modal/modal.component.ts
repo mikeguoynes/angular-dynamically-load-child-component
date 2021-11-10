@@ -7,9 +7,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { BoomComponent } from '../boom/boom.component';
 import { ChildViewDirective } from '../child-view.directive';
-import { ModalService } from '../modal.service';
 
 @Component({
   selector: 'app-modal',
@@ -18,12 +16,11 @@ import { ModalService } from '../modal.service';
 })
 export class ModalComponent implements OnInit {
   @ViewChild(ChildViewDirective) childComponentHost: ChildViewDirective;
-  childComponent?: any;
+  childComponent?: any; // SET IN THE SERVICE WHEN YOU CREATE THE INSTANCE.
   works?: boolean = true;
 
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
-    private modalService: ModalService,
     private injector: Injector,
     private app: ApplicationRef
   ) {}
@@ -31,17 +28,15 @@ export class ModalComponent implements OnInit {
   ngOnInit() {}
 
   ngAfterViewInit() {
-    setTimeout(() => {
-      this.createModalComponent(this.childComponent);
-    }, 1000);
+    this.createModalComponent();
   }
 
-  createModalComponent(childComponent: any) {
-    let factory =
-      this.componentFactoryResolver.resolveComponentFactory(BoomComponent);
+  createModalComponent() {
+    let factory = this.componentFactoryResolver.resolveComponentFactory(
+      this.childComponent
+    );
 
-    let newNode = document.createElement('child-app-comp');
-    newNode.id = 'placeholder';
+    let newNode = document.createElement('child-modal-component');
     document.querySelector('#childComponent').appendChild(newNode);
 
     const ref = factory.create(this.injector, [], newNode);
